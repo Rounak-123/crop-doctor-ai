@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { Download, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showPrompt, setShowPrompt] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -58,10 +60,10 @@ export function InstallPrompt() {
         
         <div className="flex-1 min-w-0">
           <h3 className="font-semibold text-foreground mb-1">
-            Install CropGPT
+            {t.installTitle}
           </h3>
           <p className="text-sm text-muted-foreground mb-3">
-            Add to your home screen for offline access in the field
+            {t.installDescription}
           </p>
           
           <div className="flex gap-2">
@@ -70,7 +72,7 @@ export function InstallPrompt() {
               size="sm"
               className="flex-1"
             >
-              Install
+              {t.install}
             </Button>
             <Button 
               onClick={handleDismiss} 
