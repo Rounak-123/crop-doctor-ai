@@ -23,35 +23,49 @@ export function ImageUpload({ onImageSelected, disabled }: ImageUploadProps) {
   };
 
   return (
-    <Card className="p-6 shadow-soft">
-      <div className="space-y-4">
-        <div className="flex items-center gap-3 mb-4">
-          <Camera className="w-6 h-6 text-primary" />
-          <h2 className="text-xl font-semibold text-foreground">Upload Crop Image</h2>
+    <Card className="p-6 md:p-8 shadow-medium border-2 bg-gradient-card">
+      <div className="space-y-6">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+            <Camera className="w-6 h-6 text-primary" />
+          </div>
+          <div>
+            <h2 className="text-xl font-display font-semibold text-foreground">
+              Capture Leaf Photo
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Take or upload an image for analysis
+            </p>
+          </div>
         </div>
 
         {preview ? (
-          <div className="space-y-4">
-            <img
-              src={preview}
-              alt="Preview"
-              className="w-full h-64 object-cover rounded-lg border-2 border-border"
-            />
+          <div className="space-y-5">
+            <div className="relative group">
+              <img
+                src={preview}
+                alt="Leaf preview"
+                className="w-full h-80 object-cover rounded-2xl border-2 border-border shadow-medium transition-transform group-hover:scale-[1.02]"
+              />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
             <div className="grid grid-cols-2 gap-3">
               <Button
                 onClick={() => cameraInputRef.current?.click()}
                 variant="outline"
                 size="lg"
                 disabled={disabled}
+                className="h-12 font-semibold"
               >
                 <Camera className="w-5 h-5 mr-2" />
-                Take New Photo
+                Retake
               </Button>
               <Button
                 onClick={() => fileInputRef.current?.click()}
                 variant="outline"
                 size="lg"
                 disabled={disabled}
+                className="h-12 font-semibold"
               >
                 <Upload className="w-5 h-5 mr-2" />
                 Choose File
@@ -59,14 +73,16 @@ export function ImageUpload({ onImageSelected, disabled }: ImageUploadProps) {
             </div>
           </div>
         ) : (
-          <div className="space-y-3">
-            <div className="border-2 border-dashed border-border rounded-lg p-8 text-center bg-muted/30">
-              <Camera className="w-12 h-12 mx-auto mb-3 text-primary" />
-              <p className="text-lg font-medium text-foreground mb-2">
-                Capture or Upload Leaf Image
+          <div className="space-y-5">
+            <div className="relative border-2 border-dashed border-border/60 rounded-2xl p-12 text-center bg-muted/20 hover:bg-muted/30 transition-colors">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-primary/10 flex items-center justify-center">
+                <Camera className="w-8 h-8 text-primary" />
+              </div>
+              <p className="text-lg font-semibold text-foreground mb-2">
+                Capture Leaf Photo
               </p>
-              <p className="text-sm text-muted-foreground">
-                For best results, take a clear photo of the leaf
+              <p className="text-sm text-muted-foreground max-w-xs mx-auto">
+                Take a clear, well-lit photo of the affected leaf for accurate diagnosis
               </p>
             </div>
             
@@ -75,7 +91,7 @@ export function ImageUpload({ onImageSelected, disabled }: ImageUploadProps) {
                 onClick={() => cameraInputRef.current?.click()}
                 size="lg"
                 disabled={disabled}
-                className="w-full"
+                className="h-14 font-semibold text-base shadow-soft"
               >
                 <Camera className="w-5 h-5 mr-2" />
                 Take Photo
@@ -85,7 +101,7 @@ export function ImageUpload({ onImageSelected, disabled }: ImageUploadProps) {
                 variant="outline"
                 size="lg"
                 disabled={disabled}
-                className="w-full"
+                className="h-14 font-semibold text-base"
               >
                 <Upload className="w-5 h-5 mr-2" />
                 Upload File
