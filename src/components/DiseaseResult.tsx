@@ -27,44 +27,49 @@ export function DiseaseResult({ disease, confidence, treatment }: DiseaseResultP
   };
 
   return (
-    <Card className="p-6 shadow-medium animate-in fade-in-50 duration-500">
+    <Card className="p-6 md:p-8 shadow-medium border-2 bg-gradient-card animate-fade-in">
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-start gap-4">
-          {getStatusIcon()}
-          <div className="flex-1">
-            <h3 className="text-2xl font-bold text-foreground mb-2">
+          <div className="flex-shrink-0">
+            {getStatusIcon()}
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-3 leading-tight">
               {treatment.disease}
             </h3>
-            <div className="flex items-center gap-3">
-              <Badge className={getSeverityColor()}>
+            <div className="flex flex-wrap items-center gap-3">
+              <Badge className={`${getSeverityColor()} px-3 py-1 text-sm font-semibold`}>
                 {treatment.severity.toUpperCase()}
               </Badge>
-              <span className="text-lg font-semibold text-foreground">
-                Confidence: {confidence.toFixed(1)}%
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">Confidence:</span>
+                <span className="text-xl font-bold text-foreground">
+                  {confidence.toFixed(1)}%
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Treatment */}
-        <div className="space-y-3">
-          <h4 className="text-lg font-semibold text-foreground flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-primary"></span>
+        <div className="space-y-3 p-4 rounded-xl bg-primary/5 border border-primary/10">
+          <h4 className="text-lg font-display font-semibold text-foreground flex items-center gap-3">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
             Treatment Instructions
           </h4>
-          <p className="text-base text-foreground leading-relaxed pl-4">
+          <p className="text-base text-foreground/90 leading-relaxed pl-5">
             {treatment.treatment}
           </p>
         </div>
 
         {/* Prevention */}
-        <div className="space-y-3">
-          <h4 className="text-lg font-semibold text-foreground flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-secondary"></span>
+        <div className="space-y-3 p-4 rounded-xl bg-secondary/5 border border-secondary/10">
+          <h4 className="text-lg font-display font-semibold text-foreground flex items-center gap-3">
+            <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
             Prevention Tips
           </h4>
-          <p className="text-base text-foreground leading-relaxed pl-4">
+          <p className="text-base text-foreground/90 leading-relaxed pl-5">
             {treatment.prevention}
           </p>
         </div>

@@ -77,56 +77,80 @@ export function WeatherSection({ onWeatherFetched }: WeatherSectionProps) {
   };
 
   return (
-    <Card className="p-6 shadow-soft">
-      <div className="space-y-4">
-        <div className="flex items-center gap-3 mb-4">
-          <Cloud className="w-6 h-6 text-primary" />
-          <h2 className="text-xl font-semibold text-foreground">Weather Information</h2>
+    <Card className="p-6 md:p-8 shadow-medium border-2 bg-gradient-card">
+      <div className="space-y-5">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-info/10 flex items-center justify-center">
+            <Cloud className="w-6 h-6 text-info" />
+          </div>
+          <div>
+            <h2 className="text-xl font-display font-semibold text-foreground">
+              Weather Conditions
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Get farming advice based on local weather
+            </p>
+          </div>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <div className="relative flex-1">
-            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
             <Input
               type="text"
-              placeholder="Enter your city or district"
+              placeholder="Enter your city"
               value={city}
               onChange={(e) => setCity(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && fetchWeather()}
-              className="pl-10 text-base h-12"
+              className="pl-12 h-12 text-base border-2 rounded-xl"
             />
           </div>
-          <Button onClick={fetchWeather} disabled={loading} size="lg">
-            {loading ? "Loading..." : "Get Weather"}
+          <Button 
+            onClick={fetchWeather} 
+            disabled={loading} 
+            size="lg"
+            className="h-12 px-6 font-semibold"
+          >
+            {loading ? "Loading..." : "Check"}
           </Button>
         </div>
 
         {weather && (
-          <div className="space-y-4 mt-6 animate-in fade-in-50 duration-500">
+          <div className="space-y-5 mt-6 animate-fade-in">
             <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-lg">
-                <Thermometer className="w-8 h-8 text-accent" />
+              <div className="flex items-center gap-3 p-5 bg-gradient-to-br from-accent/10 to-accent/5 rounded-2xl border border-accent/20">
+                <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center">
+                  <Thermometer className="w-7 h-7 text-accent" />
+                </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Temperature</p>
-                  <p className="text-2xl font-bold text-foreground">{weather.temp}°C</p>
+                  <p className="text-xs text-muted-foreground font-medium mb-1">Temperature</p>
+                  <p className="text-3xl font-bold text-foreground">{weather.temp}°</p>
                 </div>
               </div>
               
-              <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-lg">
-                <Droplets className="w-8 h-8 text-info" />
+              <div className="flex items-center gap-3 p-5 bg-gradient-to-br from-info/10 to-info/5 rounded-2xl border border-info/20">
+                <div className="w-12 h-12 rounded-xl bg-info/20 flex items-center justify-center">
+                  <Droplets className="w-7 h-7 text-info" />
+                </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Humidity</p>
-                  <p className="text-2xl font-bold text-foreground">{weather.humidity}%</p>
+                  <p className="text-xs text-muted-foreground font-medium mb-1">Humidity</p>
+                  <p className="text-3xl font-bold text-foreground">{weather.humidity}%</p>
                 </div>
               </div>
             </div>
 
-            <Card className={`p-4 ${weather.humidity > 75 ? 'bg-warning/10 border-warning' : 'bg-success/10 border-success'}`}>
-              <h4 className="font-semibold text-foreground mb-2">Farming Advice</h4>
-              <p className="text-sm text-foreground leading-relaxed">
+            <div className={`p-5 rounded-2xl border-2 ${
+              weather.humidity > 75 
+                ? 'bg-warning/10 border-warning/30' 
+                : 'bg-success/10 border-success/30'
+            }`}>
+              <h4 className="font-display font-semibold text-foreground mb-2 text-lg">
+                🌾 Farming Advice
+              </h4>
+              <p className="text-sm text-foreground/90 leading-relaxed">
                 {weather.advice}
               </p>
-            </Card>
+            </div>
           </div>
         )}
       </div>
