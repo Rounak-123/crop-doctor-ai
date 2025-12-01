@@ -2,6 +2,7 @@ import { AlertCircle, CheckCircle2, Info } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Treatment } from "@/data/treatments";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface DiseaseResultProps {
   disease: string;
@@ -10,6 +11,7 @@ interface DiseaseResultProps {
 }
 
 export function DiseaseResult({ disease, confidence, treatment }: DiseaseResultProps) {
+  const { t } = useLanguage();
   const getStatusIcon = () => {
     if (treatment.severity === "healthy") {
       return <CheckCircle2 className="w-8 h-8 text-success" />;
@@ -26,6 +28,12 @@ export function DiseaseResult({ disease, confidence, treatment }: DiseaseResultP
     return "bg-destructive/10 text-destructive border-destructive/20";
   };
 
+  const getSeverityLabel = () => {
+    if (treatment.severity === "healthy") return t.healthy;
+    if (treatment.severity === "mild") return t.mild;
+    return t.severe;
+  };
+
   return (
     <Card className="p-6 md:p-8 shadow-medium border-2 bg-gradient-card animate-fade-in">
       <div className="space-y-6">
@@ -40,10 +48,10 @@ export function DiseaseResult({ disease, confidence, treatment }: DiseaseResultP
             </h3>
             <div className="flex flex-wrap items-center gap-3">
               <Badge className={`${getSeverityColor()} px-3 py-1 text-sm font-semibold`}>
-                {treatment.severity.toUpperCase()}
+                {getSeverityLabel()}
               </Badge>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">Confidence:</span>
+                <span className="text-sm text-muted-foreground">{t.confidence}</span>
                 <span className="text-xl font-bold text-foreground">
                   {confidence.toFixed(1)}%
                 </span>
@@ -56,7 +64,7 @@ export function DiseaseResult({ disease, confidence, treatment }: DiseaseResultP
         <div className="space-y-3 p-4 rounded-xl bg-primary/5 border border-primary/10">
           <h4 className="text-lg font-display font-semibold text-foreground flex items-center gap-3">
             <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-            Treatment Instructions
+            {t.treatmentInstructions}
           </h4>
           <p className="text-base text-foreground/90 leading-relaxed pl-5">
             {treatment.treatment}
@@ -67,7 +75,7 @@ export function DiseaseResult({ disease, confidence, treatment }: DiseaseResultP
         <div className="space-y-3 p-4 rounded-xl bg-secondary/5 border border-secondary/10">
           <h4 className="text-lg font-display font-semibold text-foreground flex items-center gap-3">
             <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-            Prevention Tips
+            {t.preventionTips}
           </h4>
           <p className="text-base text-foreground/90 leading-relaxed pl-5">
             {treatment.prevention}

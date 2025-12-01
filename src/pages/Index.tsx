@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { Sprout, Sparkles, Leaf } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { ImageUpload } from "@/components/ImageUpload";
 import { DiseaseResult } from "@/components/DiseaseResult";
 import { WeatherSection } from "@/components/WeatherSection";
 import { DownloadGuide } from "@/components/DownloadGuide";
 import { InstallPrompt } from "@/components/InstallPrompt";
+import { LanguageSelector } from "@/components/LanguageSelector";
 import { predict, isModelLoaded, loadDefaultModel } from "@/lib/model";
 import { getTreatment } from "@/data/treatments";
 
@@ -19,6 +21,7 @@ export default function Index() {
   const [result, setResult] = useState<any>(null);
   const [weatherAdvice, setWeatherAdvice] = useState<string | undefined>();
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const initModel = async () => {
@@ -27,8 +30,8 @@ export default function Index() {
         setModelLoaded(true);
       } catch (error) {
         toast({
-          title: "Model Loading Failed",
-          description: "Could not load the AI model. Please refresh the page.",
+          title: t.modelLoadFailed,
+          description: t.modelLoadFailedDescription,
           variant: "destructive"
         });
       } finally {
@@ -42,8 +45,8 @@ export default function Index() {
   const handleAnalyze = async () => {
     if (!selectedImage || !selectedFile) {
       toast({
-        title: "No Image Selected",
-        description: "Please upload a crop image first",
+        title: t.noImageSelected,
+        description: t.noImageDescription,
         variant: "destructive"
       });
       return;
@@ -51,8 +54,8 @@ export default function Index() {
 
     if (!isModelLoaded()) {
       toast({
-        title: "Model Not Loaded",
-        description: "Please upload and load the AI model first",
+        title: t.modelNotLoaded,
+        description: t.modelNotLoadedDescription,
         variant: "destructive"
       });
       return;
@@ -82,13 +85,13 @@ export default function Index() {
       });
 
       toast({
-        title: "Analysis Complete",
-        description: `Detected: ${treatment.disease}`
+        title: t.analysisComplete,
+        description: `${t.detectedPrefix} ${treatment.disease}`
       });
     } catch (error) {
       toast({
-        title: "Analysis Failed",
-        description: error instanceof Error ? error.message : "Failed to analyze image",
+        title: t.analysisFailed,
+        description: error instanceof Error ? error.message : t.analysisFailed,
         variant: "destructive"
       });
     } finally {
@@ -103,17 +106,22 @@ export default function Index() {
       {/* Header */}
       <header className="glass sticky top-0 z-40 border-b backdrop-blur-xl">
         <div className="container mx-auto px-4 py-5">
-          <div className="flex items-center justify-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-primary flex items-center justify-center shadow-glow">
-              <Leaf className="w-7 h-7 text-primary-foreground" />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3 flex-1 justify-center">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-primary flex items-center justify-center shadow-glow">
+                <Leaf className="w-7 h-7 text-primary-foreground" />
+              </div>
+              <div>
+                <h1 className="text-2xl md:text-3xl font-display font-bold text-foreground tracking-tight">
+                  {t.appName}
+                </h1>
+                <p className="text-xs text-muted-foreground">
+                  {t.appTagline}
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl md:text-3xl font-display font-bold text-foreground tracking-tight">
-                CropGPT
-              </h1>
-              <p className="text-xs text-muted-foreground">
-                AI-Powered Crop Disease Detection
-              </p>
+            <div className="absolute right-4">
+              <LanguageSelector />
             </div>
           </div>
         </div>
@@ -129,10 +137,10 @@ export default function Index() {
                 <Sparkles className="w-10 h-10 text-primary-foreground" />
               </div>
               <p className="text-2xl text-foreground font-display font-semibold mb-2">
-                Loading AI Model
+                {t.loadingModel}
               </p>
               <p className="text-muted-foreground">
-                Preparing offline disease detection
+                {t.preparingOffline}
               </p>
             </div>
           )}
@@ -159,12 +167,12 @@ export default function Index() {
                   {analyzing ? (
                     <>
                       <Sparkles className="w-6 h-6 mr-2 animate-spin" />
-                      Analyzing Disease...
+                      {t.analyzingButton}
                     </>
                   ) : (
                     <>
                       <Sparkles className="w-6 h-6 mr-2" />
-                      Analyze Crop Disease
+                      {t.analyzeButton}
                     </>
                   )}
                 </Button>
@@ -202,7 +210,7 @@ export default function Index() {
                     className="w-full h-12 font-semibold"
                   >
                     <Leaf className="w-5 h-5 mr-2" />
-                    Analyze Another Crop
+                    {t.analyzeAnother}
                   </Button>
                 </div>
               )}
@@ -215,7 +223,7 @@ export default function Index() {
       <footer className="mt-16 pb-8 text-center">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 text-sm text-muted-foreground">
           <Sprout className="w-4 h-4 text-primary" />
-          <span>Built for farmers • Works offline • Always free</span>
+          <span>{t.footerText}</span>
         </div>
       </footer>
     </div>

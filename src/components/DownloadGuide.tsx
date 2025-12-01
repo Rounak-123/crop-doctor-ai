@@ -1,6 +1,7 @@
 import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Treatment } from "@/data/treatments";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface DownloadGuideProps {
   disease: string;
@@ -10,6 +11,8 @@ interface DownloadGuideProps {
 }
 
 export function DownloadGuide({ disease, confidence, treatment, weatherAdvice }: DownloadGuideProps) {
+  const { t } = useLanguage();
+  
   const generateGuideText = () => {
     const timestamp = new Date().toLocaleString();
     
@@ -86,7 +89,7 @@ For more information, visit your local agricultural office
       variant="secondary"
     >
       <Download className="w-5 h-5 mr-2" />
-      Download Offline Treatment Guide
+      {t.downloadGuide}
     </Button>
   );
 }

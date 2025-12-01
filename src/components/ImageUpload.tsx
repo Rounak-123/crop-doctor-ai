@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { Camera, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ImageUploadProps {
   onImageSelected: (image: File, imageUrl: string) => void;
@@ -12,6 +13,7 @@ export function ImageUpload({ onImageSelected, disabled }: ImageUploadProps) {
   const [preview, setPreview] = useState<string | null>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { t } = useLanguage();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -31,10 +33,10 @@ export function ImageUpload({ onImageSelected, disabled }: ImageUploadProps) {
           </div>
           <div>
             <h2 className="text-xl font-display font-semibold text-foreground">
-              Capture Leaf Photo
+              {t.uploadTitle}
             </h2>
             <p className="text-sm text-muted-foreground">
-              Take or upload an image for analysis
+              {t.uploadSubtitle}
             </p>
           </div>
         </div>
@@ -58,7 +60,7 @@ export function ImageUpload({ onImageSelected, disabled }: ImageUploadProps) {
                 className="h-12 font-semibold"
               >
                 <Camera className="w-5 h-5 mr-2" />
-                Retake
+                {t.retake}
               </Button>
               <Button
                 onClick={() => fileInputRef.current?.click()}
@@ -68,7 +70,7 @@ export function ImageUpload({ onImageSelected, disabled }: ImageUploadProps) {
                 className="h-12 font-semibold"
               >
                 <Upload className="w-5 h-5 mr-2" />
-                Choose File
+                {t.chooseFile}
               </Button>
             </div>
           </div>
@@ -79,10 +81,10 @@ export function ImageUpload({ onImageSelected, disabled }: ImageUploadProps) {
                 <Camera className="w-8 h-8 text-primary" />
               </div>
               <p className="text-lg font-semibold text-foreground mb-2">
-                Capture Leaf Photo
+                {t.captureLeaf}
               </p>
               <p className="text-sm text-muted-foreground max-w-xs mx-auto">
-                Take a clear, well-lit photo of the affected leaf for accurate diagnosis
+                {t.captureDescription}
               </p>
             </div>
             
@@ -94,7 +96,7 @@ export function ImageUpload({ onImageSelected, disabled }: ImageUploadProps) {
                 className="h-14 font-semibold text-base shadow-soft"
               >
                 <Camera className="w-5 h-5 mr-2" />
-                Take Photo
+                {t.takePhoto}
               </Button>
               <Button
                 onClick={() => fileInputRef.current?.click()}
@@ -104,7 +106,7 @@ export function ImageUpload({ onImageSelected, disabled }: ImageUploadProps) {
                 className="h-14 font-semibold text-base"
               >
                 <Upload className="w-5 h-5 mr-2" />
-                Upload File
+                {t.uploadFile}
               </Button>
             </div>
           </div>

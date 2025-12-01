@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface WeatherData {
   temp: number;
@@ -21,12 +22,13 @@ export function WeatherSection({ onWeatherFetched }: WeatherSectionProps) {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const fetchWeather = async () => {
     if (!city.trim()) {
       toast({
-        title: "Enter City Name",
-        description: "Please enter your city or district name",
+        title: t.enterCityName,
+        description: t.enterCityDescription,
         variant: "destructive"
       });
       return;
@@ -62,13 +64,13 @@ export function WeatherSection({ onWeatherFetched }: WeatherSectionProps) {
       onWeatherFetched?.(weatherData);
       
       toast({
-        title: "Weather Updated",
-        description: `Weather data loaded for ${city}`
+        title: t.weatherUpdated,
+        description: `${t.weatherUpdated} ${city}`
       });
     } catch (error) {
       toast({
-        title: "Weather Fetch Failed",
-        description: "Could not fetch weather data. Please check city name and try again. Note: You need to add your OpenWeather API key.",
+        title: t.weatherFetchFailed,
+        description: t.weatherFetchFailed,
         variant: "destructive"
       });
     } finally {
@@ -85,10 +87,10 @@ export function WeatherSection({ onWeatherFetched }: WeatherSectionProps) {
           </div>
           <div>
             <h2 className="text-xl font-display font-semibold text-foreground">
-              Weather Conditions
+              {t.weatherTitle}
             </h2>
             <p className="text-sm text-muted-foreground">
-              Get farming advice based on local weather
+              {t.weatherSubtitle}
             </p>
           </div>
         </div>
@@ -98,7 +100,7 @@ export function WeatherSection({ onWeatherFetched }: WeatherSectionProps) {
             <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
             <Input
               type="text"
-              placeholder="Enter your city"
+              placeholder={t.enterCity}
               value={city}
               onChange={(e) => setCity(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && fetchWeather()}
@@ -111,7 +113,7 @@ export function WeatherSection({ onWeatherFetched }: WeatherSectionProps) {
             size="lg"
             className="h-12 px-6 font-semibold"
           >
-            {loading ? "Loading..." : "Check"}
+            {loading ? t.loading : t.checkWeather}
           </Button>
         </div>
 
@@ -123,7 +125,7 @@ export function WeatherSection({ onWeatherFetched }: WeatherSectionProps) {
                   <Thermometer className="w-7 h-7 text-accent" />
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground font-medium mb-1">Temperature</p>
+                  <p className="text-xs text-muted-foreground font-medium mb-1">{t.temperature}</p>
                   <p className="text-3xl font-bold text-foreground">{weather.temp}°</p>
                 </div>
               </div>
@@ -133,7 +135,7 @@ export function WeatherSection({ onWeatherFetched }: WeatherSectionProps) {
                   <Droplets className="w-7 h-7 text-info" />
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground font-medium mb-1">Humidity</p>
+                  <p className="text-xs text-muted-foreground font-medium mb-1">{t.humidity}</p>
                   <p className="text-3xl font-bold text-foreground">{weather.humidity}%</p>
                 </div>
               </div>
@@ -145,7 +147,7 @@ export function WeatherSection({ onWeatherFetched }: WeatherSectionProps) {
                 : 'bg-success/10 border-success/30'
             }`}>
               <h4 className="font-display font-semibold text-foreground mb-2 text-lg">
-                🌾 Farming Advice
+                {t.farmingAdvice}
               </h4>
               <p className="text-sm text-foreground/90 leading-relaxed">
                 {weather.advice}
